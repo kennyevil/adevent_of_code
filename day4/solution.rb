@@ -7,27 +7,11 @@ def input_data
 end
 
 def overlapping_pairs
-  overlaps = 0
-
-  input_data.each do |pair|
-    first_group, second_group = pair.split(",")
-
-    overlaps +=1 if overlap(first_group, second_group)
-  end
-
-  overlaps
+  input_data.map { |pair| pair if overlap(pair.split(",")[0], pair.split(",")[1]) }.compact.size
 end
 
 def partially_overlapping_pairs
-  overlaps = 0
-
-  input_data.each do |pair|
-    first_group, second_group = pair.split(",")
-
-    overlaps += 1 if partial_overlap(first_group, second_group)
-  end
-
-  overlaps
+  input_data.map { |pair| pair if partial_overlap(pair.split(",")[0], pair.split(",")[1]) }.compact.size
 end
 
 def overlap(first_group, second_group)
@@ -43,7 +27,7 @@ def partial_overlap(first_group, second_group)
   fg = first_group.split("-")
   sg = second_group.split("-")
 
-  !(fg[0].to_i > sg[1].to_i || fg[1].to_i < sg[0].to_i)
+  fg[0].to_i <= sg[1].to_i && fg[1].to_i >= sg[0].to_i
 end
 
 puts "There are #{overlapping_pairs} overlapping groups"
