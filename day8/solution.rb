@@ -3,7 +3,7 @@ def input_data
   file_data = file.read
   file.close
 
-  file_data.split("\n").map { |line| line.split("").map(&:to_i) }
+  @input_data = file_data.split("\n").map { |line| line.split("").map(&:to_i) }
 end
 
 def find_visible_trees
@@ -19,12 +19,12 @@ def find_visible_trees
 end
 
 def tree_visible_from_any_edge?(row, column)
-  tree = input_data[row][column]
+  tree = @input_data[row][column]
 
-  left_trees = input_data[row][0..column - 1]
-  right_trees = input_data[row][column + 1..98]
-  upper_trees = input_data[0..row - 1].map { |r| r[column] }
-  lower_trees = input_data[row + 1..98].map { |r| r[column] }
+  left_trees = @input_data[row][0..column - 1]
+  right_trees = @input_data[row][column + 1..98]
+  upper_trees = @input_data[0..row - 1].map { |r| r[column] }
+  lower_trees = @input_data[row + 1..98].map { |r| r[column] }
 
   other_trees = [left_trees, right_trees, upper_trees, lower_trees].sort_by(&:size)
 
@@ -38,14 +38,14 @@ def visible_from_edge?(tree, trees)
 end
 
 def tree_scenic_score(row, column)
-  tree = input_data[row][column]
+  tree = @input_data[row][column]
 
   other_trees = []
 
-  other_trees << input_data[row][0..column - 1].reverse
-  other_trees << input_data[row][column + 1..98]
-  other_trees << input_data[0..row - 1].map { |r| r[column] }.reverse
-  other_trees << input_data[row + 1..98].map { |r| r[column] }
+  other_trees << @input_data[row][0..column - 1].reverse
+  other_trees << @input_data[row][column + 1..98]
+  other_trees << @input_data[0..row - 1].map { |r| r[column] }.reverse
+  other_trees << @input_data[row + 1..98].map { |r| r[column] }
 
   directional_scenic_scores = []
 
@@ -74,5 +74,6 @@ def scenic_score(tree, trees)
   visibility + 1
 end
 
+input_data
 find_visible_trees
 best_scenic_score
